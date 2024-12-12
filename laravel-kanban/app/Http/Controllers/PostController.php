@@ -14,7 +14,7 @@ class PostController extends Controller implements HasMiddleware
     public static function middleware()
     {
         return [
-            new Middleware('auth:sanctum', except: ['index', 'show'])
+            new Middleware('auth:sanctum', except: ['index', 'show', 'getByStatus'])
         ];
     }
 
@@ -24,6 +24,11 @@ class PostController extends Controller implements HasMiddleware
     public function index()
     {
         return Post::with('comments')->get();
+    }
+
+    public function getByStatus($status) {
+        $posts = Post::where('status', $status)->get();
+        return $posts;
     }
 
     /**
@@ -61,8 +66,6 @@ class PostController extends Controller implements HasMiddleware
      */
     public function update(Request $request, Post $post)
     {
-        Gate::authorize('modify', $post);
-
         $fields = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
@@ -79,8 +82,6 @@ class PostController extends Controller implements HasMiddleware
      */
     public function destroy(Post $post)
     {
-        Gate::authorize('modify', $post);
-
         $post->delete();
 
         return ['message' => 'The post has been deleted'];

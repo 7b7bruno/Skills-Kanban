@@ -31,7 +31,11 @@ export default function Layout() {
         <>
             <header>
                 <nav>
-                    <Link to="/" className="nav-link">Home</Link>
+                    <div>
+                        <Link to="/" className="nav-link">Project manager</Link>
+                        <Link to="/create" className="nav-link">Create post</Link>
+                    </div>
+                    
                     {user ? 
                         <div className="flex items-center space-x-4">
                             <p className="text-xs text-slate-400">Welcome back {user.name}</p>
